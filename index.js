@@ -2,13 +2,13 @@ const SQUARE_SIZE = 100;
 const PLAYFIELD_WIDTH = 1000;
 const PLAYFIELD_HEIGHT = 2000;
 
-const GREEN = "green"; // S
-const RED = "red"; // Z
-const BLUE = "blue"; // J
-const LIGHT_BLUE = "light blue"; // I
-const PURPLE = "purple"; // T
-const ORANGE = "orange"; // L
-const YELLOW = "yellow"; // O
+const GREEN = "#008000";
+const RED = "#ff0000";
+const BLUE = "#0000ff";
+const LIGHT_BLUE = "#00ffff";
+const PURPLE = "#800080";
+const ORANGE = "#ffa500";
+const YELLOW = "#ffff00";
 const ALL_COLORS = [GREEN, RED, BLUE, LIGHT_BLUE, PURPLE, ORANGE, YELLOW, null];
 
 class Playfield {
@@ -35,10 +35,10 @@ class Playfield {
 		if (blockColor) {
 			context.fillStyle = blockColor;
 			context.fillRect(
-				xCoordinate,
-				yCoordinate,
-				SQUARE_SIZE,
-				SQUARE_SIZE
+				xCoordinate + 2,
+				yCoordinate + 2,
+				SQUARE_SIZE - 4,
+				SQUARE_SIZE - 4
 			);
 		} else {
 			context.clearRect(
@@ -48,12 +48,17 @@ class Playfield {
 				SQUARE_SIZE
 			);
 		}
-		context.strokeRect(xCoordinate, yCoordinate, SQUARE_SIZE, SQUARE_SIZE);
+		context.strokeStyle = blockColor ? `${blockColor}80` : 'gray';
+		context.strokeRect(
+			xCoordinate + 1,
+			yCoordinate + 1,
+			SQUARE_SIZE - 2,
+			SQUARE_SIZE - 2
+		);
 	}
 
 	draw() {
 		const context = this.getContext();
-		context.strokeStyle = "rgba(255, 255, 255, 0.5)";
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 20; j++) {
 				const blockColor = this.get(i, j);
