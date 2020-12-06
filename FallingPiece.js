@@ -11,8 +11,12 @@ const createGetAbsoluteTileCoordinates = ([rootColumn, rootRow]) => ([
 export class FallingPiece {
 	constructor(type) {
 		this.type = type;
-		this.column = 4;
+		this.col = 4;
 		this.row = 20;
+		this.direction = 0;
+
+		this.moveLeft = this.moveLeft.bind(this);
+		this.moveRight = this.moveRight.bind(this);
 	}
 
 	getTileLocationsAtPosition([col, row]) {
@@ -21,25 +25,36 @@ export class FallingPiece {
 	}
 
 	getTileLocationsAtCurrentPosition() {
-		return this.getTileLocationsAtPosition([this.column, this.row]);
+		return this.getTileLocationsAtPosition([this.col, this.row]);
 	}
 
 	getColor() {
 		return ALL_COLORS[this.type];
 	}
 
+	validateTilesAtPosition([col, row], validate) {
+		const allTilePositions = this.getTileLocationsAtPosition([col, row]);
+		return allTilePositions.every(validate);
+	}
+
 	fall(validate) {
-		const allTilePositions = this.getTileLocationsAtPosition([
-			this.column,
-			this.row - 1,
-		]);
-		console.log("validation", allTilePositions.every(validate));
-		if (allTilePositions.every(validate)) {
+		if (this.validateTilesAtPosition([this.col, this.row - 1], validate)) {
 			this.row--;
 			return true;
 		} else {
-			console.log("failed to fall");
 			return false;
+		}
+	}
+
+	moveLeft(validate) {
+		if (this.validateTilesAtPosition([this.col - 1, this.row], validate)) {
+			this.col--;
+		}
+	}
+
+	moveRight(validate) {
+		if (this.validateTilesAtPosition([this.col + 1, this.row], validate)) {
+			this.col++;
 		}
 	}
 

@@ -29,8 +29,9 @@ export class Playfield {
 		this.data[row][col] = value;
 	}
 
-	isSpotAvailable([column, row]) {
-		return !this.get([column, row]);
+	isSpotAvailable([col, row]) {
+		const isInBounds = col >= 0 && col < 10 && row >= 0 && row < 40;
+		return isInBounds && !this.get([col, row]);
 	}
 
 	drawBlockAtCoordinates([column, row], blockColor) {
