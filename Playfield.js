@@ -9,24 +9,33 @@ function getRandomFill() {
 
 export class Playfield {
 	constructor() {
+		this.isSpotAvailable = this.isSpotAvailable.bind(this);
 		const columns = 10;
 		const rows = 40;
 		this.context = document.getElementById("playfield").getContext("2d");
-		this.data = Array.from(new Array(columns), () => new Array(rows));
+		this.data = Array.from(new Array(rows), () => new Array(columns));
 		for (let i = 0; i < 10; i++) {
-			for (let j = 0; j < 10; j++) {
-				this.data[i][j] = getRandomFill();
+			for (let j = 0; j < 40; j++) {
+				this.set([i, j], j < 10 ? getRandomFill() : null);
 			}
 		}
 	}
 
-	get(x, y) {
-		return this.data[x][y];
+	get([col, row]) {
+		return this.data[col][row];
 	}
 
-	drawBlockAtCoordinates(x, y, blockColor) {
-		const xCoordinate = SQUARE_SIZE * x;
-		const yCoordinate = PLAYFIELD_HEIGHT - SQUARE_SIZE * y - SQUARE_SIZE;
+	set([col, row], value) {
+		this.data[row][col] = value;
+	}
+
+	isSpotAvailable([column, row]) {
+		return !this.get([column, row]);
+	}
+
+	drawBlockAtCoordinates([column, row], blockColor) {
+		const xCoordinate = SQUARE_SIZE * column;
+		const yCoordinate = PLAYFIELD_HEIGHT - SQUARE_SIZE * row - SQUARE_SIZE;
 		if (blockColor) {
 			this.context.fillStyle = blockColor;
 			this.context.fillRect(
@@ -55,9 +64,14 @@ export class Playfield {
 	draw(fallingPiece) {
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 20; j++) {
-				const blockColor = this.get(i, j);
-				this.drawBlockAtCoordinates(i, j, blockColor);
+				const blockColor = this.get([i, j]);
+				this.drawBlockAtCoordinates([i, j], blockColor);
 			}
 		}
+
+		const fallingPieceTiles = fallingPiece.getTileLocationsAtCurrentPosition();
+		fallingPieceTiles.forEach((tile) => {
+			this.drawBlockAtCoordinates(tile, fallingPiece.getColor());
+		});
 	}
 }

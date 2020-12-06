@@ -1,4 +1,5 @@
-import RotationData from "./RotationData.json";
+import { ALL_COLORS } from "./constants.js";
+import RotationData from "./RotationData.js";
 
 const createGetAbsoluteTileCoordinates = ([rootColumn, rootRow]) => ([
 	tileXOffset,
@@ -14,15 +15,17 @@ export class FallingPiece {
 		this.row = 20;
 	}
 
-	getTileLocationsAtPosition([column, row]) {
+	getTileLocationsAtPosition([col, row]) {
 		const { tiles } = RotationData[this.type];
-		return tiles.map(
-			createGetAbsoluteTileCoordinates([this.column, this.row])
-		);
+		return tiles.map(createGetAbsoluteTileCoordinates([col, row]));
 	}
 
 	getTileLocationsAtCurrentPosition() {
 		return this.getTileLocationsAtPosition([this.column, this.row]);
+	}
+
+	getColor() {
+		return ALL_COLORS[this.type];
 	}
 
 	fall(validate) {
@@ -30,11 +33,13 @@ export class FallingPiece {
 			this.column,
 			this.row - 1,
 		]);
-		console.log("all tile positions", allTilePositions);
+		console.log("validation", allTilePositions.every(validate));
 		if (allTilePositions.every(validate)) {
 			this.row--;
+			return true;
 		} else {
 			console.log("failed to fall");
+			return false;
 		}
 	}
 
