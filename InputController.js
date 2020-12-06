@@ -15,36 +15,40 @@ function findActionForKey(bindings, keycode) {
 	);
 }
 
-function notImplementedFn() {
+export function notImplementedFn() {
 	console.error("Not implemented yet");
 }
 
-function registerInputHandlers({
+export function registerInputHandlers(
 	handlers = {
 		hardDrop: notImplementedFn,
 		softDrop: notImplementedFn,
 		moveLeft: notImplementedFn,
 		moveRight: notImplementedFn,
-		hold: notImplementedFn,
-		pause: notImplementedFn,
 		rotateClockwise: notImplementedFn,
 		rotateCounterClockwise: notImplementedFn,
+		hold: notImplementedFn,
+		pause: notImplementedFn,
 	},
 	bindings = {
 		hardDrop: ["KeyE"],
 		softDrop: ["KeyD"],
 		moveLeft: ["KeyS"],
 		moveRight: ["KeyF"],
-		hold: ["Space"],
-		pause: ["KeyR"],
-		rotateClockwise: ["KeyP"],
-		rotateCounterClockwise: ["KeyJ"],
-	},
-}) {
+		rotateClockwise: ["ArrowRight"],
+		rotateCounterClockwise: ["ArrowLeft"],
+		hold: ["Tab"],
+		pause: ["Escape"],
+	}
+) {
 	document.addEventListener("keydown", (evt) => {
 		console.log("code", evt.code);
 		const action = findActionForKey(bindings, evt.code);
-		handlers[action]();
+		if (action) {
+			handlers[action]();
+		} else {
+			console.log("That key doesn't do anything");
+		}
 		evt.preventDefault();
 	});
 }

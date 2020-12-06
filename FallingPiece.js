@@ -14,9 +14,6 @@ export class FallingPiece {
 		this.col = 4;
 		this.row = 20;
 		this.direction = 0;
-
-		this.moveLeft = this.moveLeft.bind(this);
-		this.moveRight = this.moveRight.bind(this);
 	}
 
 	getTileLocationsAtPosition([col, row]) {
@@ -41,21 +38,24 @@ export class FallingPiece {
 		if (this.validateTilesAtPosition([this.col, this.row - 1], validate)) {
 			this.row--;
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	moveLeft(validate) {
 		if (this.validateTilesAtPosition([this.col - 1, this.row], validate)) {
 			this.col--;
+			return true;
 		}
+		return false;
 	}
 
 	moveRight(validate) {
 		if (this.validateTilesAtPosition([this.col + 1, this.row], validate)) {
 			this.col++;
+			return true;
 		}
+		return false;
 	}
 
 	rotate(validate) {
