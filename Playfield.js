@@ -1,5 +1,12 @@
 import { ALL_COLORS, PLAYFIELD_HEIGHT, SQUARE_SIZE } from "./constants.js";
 
+const allColorsWithNull = [...Object.values(ALL_COLORS), null];
+function getRandomFill() {
+	return allColorsWithNull[
+		Math.floor(Math.random() * allColorsWithNull.length)
+	];
+}
+
 export class Playfield {
 	constructor() {
 		const columns = 10;
@@ -8,8 +15,7 @@ export class Playfield {
 		this.data = Array.from(new Array(columns), () => new Array(rows));
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 10; j++) {
-				this.data[i][j] =
-					ALL_COLORS[Math.floor(Math.random() * ALL_COLORS.length)];
+				this.data[i][j] = getRandomFill();
 			}
 		}
 	}

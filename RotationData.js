@@ -1,4 +1,4 @@
-{
+export default {
 	"I": {
 		"tiles": [
 			[0, 0],
