@@ -26,3 +26,6 @@ export const ALL_COLORS = {
 	T: PURPLE,
 	Z: RED,
 };
+
+export const RIGHT = 1;
+export const LEFT = -1;

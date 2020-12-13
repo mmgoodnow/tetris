@@ -25,8 +25,8 @@ export function registerInputHandlers(
 		softDrop: notImplementedFn,
 		moveLeft: notImplementedFn,
 		moveRight: notImplementedFn,
-		rotateClockwise: notImplementedFn,
-		rotateCounterClockwise: notImplementedFn,
+		rotateRight: notImplementedFn,
+		rotateLeft: notImplementedFn,
 		hold: notImplementedFn,
 		pause: notImplementedFn,
 	},
@@ -35,19 +35,20 @@ export function registerInputHandlers(
 		softDrop: ["KeyD"],
 		moveLeft: ["KeyS"],
 		moveRight: ["KeyF"],
-		rotateClockwise: ["ArrowRight"],
-		rotateCounterClockwise: ["ArrowLeft"],
+		rotateRight: ["ArrowRight"],
+		rotateLeft: ["ArrowLeft"],
 		hold: ["Tab"],
 		pause: ["Escape"],
 	}
 ) {
 	document.addEventListener("keydown", (evt) => {
-		console.log("code", evt.code);
-		const action = findActionForKey(bindings, evt.code);
-		if (action) {
-			handlers[action]();
-		} else {
-			console.log("That key doesn't do anything");
+		if (!evt.repeat) {
+			const action = findActionForKey(bindings, evt.code);
+			if (action) {
+				handlers[action]();
+			} else {
+				console.log("That key doesn't do anything");
+			}
 		}
 		evt.preventDefault();
 	});

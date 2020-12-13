@@ -1,13 +1,13 @@
-import { T, L } from "./constants.js";
+import { L, T, LEFT, RIGHT } from "./constants.js";
 import { FallingPiece } from "./FallingPiece.js";
-import { registerInputHandlers, notImplementedFn } from "./InputController.js";
+import { notImplementedFn, registerInputHandlers } from "./InputController.js";
 import { Playfield } from "./Playfield.js";
 
 let playfield = new Playfield();
-let piece = new FallingPiece(L);
+let piece = new FallingPiece(T, playfield.isSpotAvailable);
 
 const intervalId1 = setInterval(() => {
-	const rv = piece.fall(playfield.isSpotAvailable);
+	const rv = piece.fall();
 	if (!rv) clearInterval(intervalId1);
 }, 1000);
 
@@ -18,10 +18,10 @@ const intervalId2 = setInterval(() => {
 registerInputHandlers({
 	hardDrop: notImplementedFn,
 	softDrop: notImplementedFn,
-	moveLeft: () => piece.moveLeft(playfield.isSpotAvailable),
-	moveRight: () => piece.moveRight(playfield.isSpotAvailable),
+	moveLeft: () => piece.move(LEFT),
+	moveRight: () => piece.move(RIGHT),
 	hold: notImplementedFn,
 	pause: notImplementedFn,
-	rotateClockwise: notImplementedFn,
-	rotateCounterClockwise: notImplementedFn,
+	rotateRight: () => piece.rotate(RIGHT),
+	rotateLeft: () => piece.rotate(LEFT),
 });
